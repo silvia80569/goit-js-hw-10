@@ -35,10 +35,11 @@ const populateBreedSelect = () => {
       option.textContent = breed.name;
       breedSelect.appendChild(option);
     });
+    new SlimSelect('.breed-select', { showSearch: false });
     breedSelect.style.display = 'block';
     loader.style.display = 'none';
   }).catch(err => {
-    error.style.display = 'block';
+    Notiflix.Notify.failure('Oops! Something went wrong! Try reloading the page!');
     loader.style.display = 'none';
   });
 };
@@ -49,15 +50,19 @@ const displayCatInfo = (breedId) => {
   fetchCatByBreed(breedId).then(cat => {
     const { name, description, temperament } = cat.breeds[0];
     catInfo.innerHTML = `
-      <img src="${cat.url}" alt="${name}" />
-      <h2>${name}</h2>
-      <p>${description}</p>
-      <p><strong>Temperament:</strong> ${temperament}</p>
+      <div>
+        <img src="${cat.url}" alt="${name}"/>
+      </div>
+      <div>
+        <h2>${name}</h2>
+        <p>${description}</p>
+        <p><strong>Temperament:</strong> ${temperament}</p>
+      </div>
     `;
     loader.style.display = 'none';
-    catInfo.style.display = 'block';
+    catInfo.style.display = 'flex'; // Afisam cat-info ca flex container
   }).catch(err => {
-    error.style.display = 'block';
+    Notiflix.Notify.failure('Oops! Something went wrong! Try reloading the page!');
     loader.style.display = 'none';
   });
 };
@@ -75,5 +80,15 @@ document.addEventListener('DOMContentLoaded', () => {
   error.style.display = 'none';
   catInfo.style.display = 'none';
   populateBreedSelect();
+
+  // Adăugăm o clasă când selectorul SlimSelect este deschis
+  breedSelect.addEventListener('selectOpen', () => {
+    breedSelect.classList.add('opened');
+  });
+
+  // Eliminăm clasa când selectorul SlimSelect se închide
+  breedSelect.addEventListener('selectClose', () => {
+    breedSelect.classList.remove('opened');
+  });
 });
 
