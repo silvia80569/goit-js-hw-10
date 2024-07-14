@@ -6,7 +6,10 @@
   max-width: 300px;
   margin: 20px 40px;
 }
-
+.breed-select option {
+  background-color: #8e8585;
+  color: white;
+}
 .loader {
   display: block;
   width: 50px;
